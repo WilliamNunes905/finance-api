@@ -21,6 +21,10 @@
   },
   "homepage": "https://github.com/WilliamNunes905/finance-api#readme",
   "devDependencies": {
-    "nodemon": "2.0.15"
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "mysql2": "^3.22.0"
   }
 }
