@@ -1,0 +1,39 @@
+services:
+  node:
+    # Faz o docker construir (build) de uma imagem personalizada
+    # baseada no arquivo Dockerfile
+    build: 
+        dockerfile: ./Dockerfile
+        context: .
+    container_name: finance_api
+    restart: always
+    # Diretório padrão de execução
+    working_dir: /app
+    volumes:
+      # Monta o diretório atual, com todos os dados da aplicação, dentro do diretório /app
+      - ./finance_script.sql:/docker-entrypoint-initdb.d/finance_script.sql
+    ports:
+      - 3001:3001
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: database
+      MYSQL_PORT: 3306
+    # Informa ao docker, para que o container node seja iniciado após o container database
+    depends_on:
+      database:
+        condition: service_healthy   
+
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: financeapi
+    healthcheck:
+      # Deve aguardar o banco ficar operacional
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+    ports:
+      - "33060:3306"
