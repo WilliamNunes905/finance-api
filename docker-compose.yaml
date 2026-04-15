@@ -3,35 +3,31 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    container_name: finance_api
     restart: always
     working_dir: /app
 
     volumes:
       - ./backend:/app
-      - ./backend/finance_script.sql:/docker-entrypoint-initdb.d/finance_script.sql
 
     ports:
       - 3001:3001
 
-    environment:
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_HOST: database
-      MYSQL_PORT: 3306
+    env_file:
+      - ./backend/.env
 
     depends_on:
       database:
-        condition: service_healthy   
+        condition: service_healthy
+
+    networks:
+      - app-network
 
   database:
     image: mysql:8.0
-    container_name: finance_db
     restart: always
 
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: financeapi
+    env_file:
+      - ./.env.database
 
     ports:
       - "33060:3306"
@@ -45,5 +41,11 @@ services:
       timeout: 10s
       retries: 5
 
+    networks:
+      - app-network
+
 volumes:
   db_data:
+
+networks:
+  app-network:
