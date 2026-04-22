@@ -5,5 +5,4 @@ const routers = require('./routes');
 app.use(express.json());
 app.use(routers);
 
-
 module.exports = app;
