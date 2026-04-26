@@ -28,8 +28,10 @@
     "sinon": "^21.1.2"
   },
   "dependencies": {
+    "camelize": "^1.0.1",
     "dotenv": "^17.4.2",
     "express": "^4.22.1",
-    "mysql2": "^3.22.0"
+    "mysql2": "^3.22.0",
+    "snakeize": "^0.1.0"
   }
 }
